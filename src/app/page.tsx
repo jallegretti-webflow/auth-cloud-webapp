@@ -44,7 +44,7 @@ export default function Home() {
               },
             });
           }}
-          className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex items-center justify-center rounded-md bg-webflow-blue px-4 py-2 text-sm font-medium text-white hover:bg-webflow-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-webflow-blue"
         >
           Log out
         </button>
