@@ -25,12 +25,8 @@ export default function Signup() {
     setError("");
 
     try {
-      const { data, error } = await signUp.email({
-        email,
-        password,
-        name,
-        callbackURL: "/app",
-      });
+      // No `callbackURL` — see the matching note in login/page.tsx.
+      const { data, error } = await signUp.email({ email, password, name });
       if (error) setError(error.message || "Signup failed");
       else if (data) router.push("/");
     } catch {

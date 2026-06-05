@@ -24,11 +24,11 @@ export default function Login() {
     setError("");
 
     try {
-      const { data, error } = await signIn.email({
-        email,
-        password,
-        callbackURL: "/app",
-      });
+      // No `callbackURL` — Better Auth would treat it as a hard browser
+      // navigation, bypassing Next.js's basePath-aware router. Letting
+      // `router.push("/")` do the redirect keeps us correct whether or not
+      // a basePath is set in the deployment.
+      const { data, error } = await signIn.email({ email, password });
       if (error) setError(error.message || "Login failed");
       else if (data) router.push("/");
     } catch {
