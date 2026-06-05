@@ -4,6 +4,7 @@ import { signIn, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { WebflowLogo } from "@/components/WebflowLogo";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,9 +15,7 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isPending && session) {
-      router.push("/");
-    }
+    if (!isPending && session) router.push("/");
   }, [session, isPending, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,13 +29,9 @@ export default function Login() {
         password,
         callbackURL: "/app",
       });
-
-      if (error) {
-        setError(error.message || "Login failed");
-      } else if (data) {
-        router.push("/");
-      }
-    } catch (err) {
+      if (error) setError(error.message || "Login failed");
+      else if (data) router.push("/");
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setIsLoading(false);
@@ -45,35 +40,46 @@ export default function Login() {
 
   if (isPending) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
+      <div className="wf-page flex items-center justify-center">
+        <div className="text-wf-fg-dim">Loading…</div>
       </div>
     );
   }
 
-  if (session) {
-    return null; // Will redirect to home
-  }
+  if (session) return null;
 
   return (
-    <div className="min-h-screen text-black flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{" "}
-            <Link
-              href="/signup"
-              className="font-medium text-webflow-blue hover:text-webflow-blue-hover"
-            >
-              create a new account
-            </Link>
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+    <div className="wf-page">
+      <div className="wf-glow" aria-hidden="true" />
+
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12">
+        <Link href="/" className="mb-10 flex items-center gap-3">
+          <WebflowLogo size={32} />
+          <span className="text-sm font-semibold tracking-tight text-wf-fg">
+            Webflow Cloud
+          </span>
+        </Link>
+
+        <div className="w-full max-w-md rounded-2xl border border-wf-border bg-wf-surface p-8 backdrop-blur-sm">
+          <div className="mb-6 text-center">
+            <p className="mb-3 inline-block rounded-full border border-wf-border bg-wf-surface px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-wf-fg-dim">
+              Sign in
+            </p>
+            <h1 className="text-2xl font-semibold tracking-tight text-wf-fg">
+              Welcome back
+            </h1>
+            <p className="mt-2 text-sm text-wf-fg-dim">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/signup"
+                className="text-wf-blue transition hover:text-wf-blue-2"
+              >
+                Create one
+              </Link>
+            </p>
+          </div>
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="sr-only">
                 Email address
@@ -84,10 +90,10 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-webflow-blue focus:border-webflow-blue focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="block w-full rounded-lg border border-wf-border bg-wf-bg/40 px-4 py-2.5 text-sm text-wf-fg placeholder:text-wf-fg-mute focus:border-wf-blue focus:outline-none focus:ring-2 focus:ring-wf-blue/30"
               />
             </div>
             <div>
@@ -100,29 +106,41 @@ export default function Login() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-webflow-blue focus:border-webflow-blue focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="block w-full rounded-lg border border-wf-border bg-wf-bg/40 px-4 py-2.5 text-sm text-wf-fg placeholder:text-wf-fg-mute focus:border-wf-blue focus:outline-none focus:ring-2 focus:ring-wf-blue/30"
               />
             </div>
-          </div>
 
-          {error && (
-            <div className="text-red-600 text-sm text-center">{error}</div>
-          )}
+            {error && (
+              <div className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+                {error}
+              </div>
+            )}
 
-          <div>
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-webflow-blue hover:bg-webflow-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-webflow-blue disabled:opacity-50 disabled:cursor-not-allowed"
+              className="wf-btn-glow w-full rounded-lg bg-wf-blue px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#2a7ef8] disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isLoading ? "Signing in..." : "Sign in"}
+              {isLoading ? "Signing in…" : "Sign in"}
             </button>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+
+        <p className="mt-8 text-xs text-wf-fg-mute">
+          Built with Better Auth · Deployed on{" "}
+          <a
+            href="https://webflow.com/cloud"
+            target="_blank"
+            rel="noreferrer"
+            className="transition hover:text-wf-blue"
+          >
+            Webflow Cloud
+          </a>
+        </p>
+      </main>
     </div>
   );
 }
