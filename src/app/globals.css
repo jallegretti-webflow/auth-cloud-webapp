@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+:root {
+  --wf-bg: #06091c;
+  --wf-bg-2: #0b1030;
+  --wf-surface: rgba(255, 255, 255, 0.04);
+  --wf-surface-hover: rgba(255, 255, 255, 0.08);
+  --wf-border: rgba(255, 255, 255, 0.08);
+  --wf-border-strong: rgba(255, 255, 255, 0.14);
+  --wf-fg: #f5f7ff;
+  --wf-fg-dim: #9aa2c7;
+  --wf-fg-mute: #6c749a;
+  --wf-blue: #146ef5;
+  --wf-blue-2: #4353ff;
+}
+
+@theme inline {
+  --color-wf-bg: var(--wf-bg);
+  --color-wf-bg-2: var(--wf-bg-2);
+  --color-wf-surface: var(--wf-surface);
+  --color-wf-surface-hover: var(--wf-surface-hover);
+  --color-wf-border: var(--wf-border);
+  --color-wf-border-strong: var(--wf-border-strong);
+  --color-wf-fg: var(--wf-fg);
+  --color-wf-fg-dim: var(--wf-fg-dim);
+  --color-wf-fg-mute: var(--wf-fg-mute);
+  --color-wf-blue: var(--wf-blue);
+  --color-wf-blue-2: var(--wf-blue-2);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--wf-bg);
+  color: var(--wf-fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Multi-layer page background (stacked radials — Tailwind can't express this
+   cleanly so it lives here as a single utility class). */
+.wf-page {
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 70% -10%, rgba(67, 83, 255, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 10% 10%, rgba(20, 110, 245, 0.12), transparent 55%),
+    linear-gradient(180deg, var(--wf-bg) 0%, var(--wf-bg-2) 100%);
+  overflow: hidden;
+}
+
+/* Soft top glow overlay, sits above .wf-page and below content. */
+.wf-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(600px 300px at 50% 0%, rgba(67, 83, 255, 0.22), transparent 70%);
+  filter: blur(10px);
+  z-index: 0;
+}
+
+/* Webflow gradient text — apply to a <span> inside a heading. */
+.wf-gradient {
+  background: linear-gradient(90deg, #6c8dff 0%, #146ef5 50%, #9b7dff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Glow shadow for primary CTAs (Tailwind's shadow utilities don't combine
+   an outer drop with an inner highlight in one rule). */
+.wf-btn-glow {
+  box-shadow: 0 6px 24px -8px rgba(20, 110, 245, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition: box-shadow 0.15s, background 0.15s, transform 0.1s;
+}
+
+.wf-btn-glow:hover {
+  box-shadow: 0 8px 32px -8px rgba(20, 110, 245, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
