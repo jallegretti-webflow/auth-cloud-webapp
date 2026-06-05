@@ -1,20 +1,19 @@
 import type { NextConfig } from "next";
 
+// Match the official Webflow Cloud convention: read basePath from BASE_URL
+// (which Webflow Cloud's build pipeline injects at build time from the
+// dashboard's Mount Path setting). Empty locally, "/app" in production.
+// NEXT_PUBLIC_BASE_PATH mirrors it into the client bundle so the auth client
+// can build correct fetch URLs.
+const basePath = process.env.BASE_URL || "";
+
 const nextConfig: NextConfig = {
-  basePath: "/app",
-  async redirects() {
-    // With basePath: "/app" set, Next.js serves nothing at "/" — visiting it
-    // would 404. This redirect sends "/" → "/app" so the app is reachable at
-    // the root of the dev origin. basePath: false keeps the source/destination
-    // literal (otherwise Next would prefix them with basePath).
-    return [
-      {
-        source: "/",
-        destination: "/app",
-        basePath: false,
-        permanent: false,
-      },
-    ];
+  ...(basePath && {
+    basePath,
+    assetPrefix: process.env.ASSETS_PREFIX || basePath,
+  }),
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
   },
 };
 
